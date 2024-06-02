@@ -100,7 +100,7 @@ func createDiff(a, b, parent *html.Node) {
 	}
 
 	if a.Data != b.Data {
-        newNode := makeChangeWrapper(a, "green")
+        newNode := makeChangeWrapper(a, "red")
 
 		parent.InsertBefore(
             newNode,
@@ -108,8 +108,8 @@ func createDiff(a, b, parent *html.Node) {
 		)
 
         parent.InsertBefore(
-            makeChangeWrapper(b, "red"),
-            newNode,
+            makeChangeWrapper(b, "green"),
+            a,
         )
     
         defer a.Parent.RemoveChild(a)
