@@ -96,7 +96,7 @@ func createDiff(a, b, parent *html.Node) {
 	}
 
 	if a == nil {
-		parent.AppendChild(makeChangeWrapperNew(b, "green"))
+		parent.Parent.AppendChild(makeChangeWrapperNew(b, "green"))
 		return
 	}
 
