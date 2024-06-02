@@ -52,6 +52,8 @@ func makeChangeWrapper(node *html.Node, color string) *html.Node {
         Data:      node.Data,
         Namespace: node.Namespace,
         Attr:      node.Attr,
+        FirstChild: node.FirstChild,
+        LastChild: node.LastChild,
     }
 
     styleWrapper := &html.Node{
@@ -69,6 +71,23 @@ func makeChangeWrapper(node *html.Node, color string) *html.Node {
     return styleWrapper
 }
 
+func makeChangeWrapperNew(node *html.Node, color string) *html.Node {
+    styleWrapper := &html.Node{
+        Type: html.ElementNode,
+        Data: "div",
+        Attr: []html.Attribute{
+            {
+                Key: "style",
+                Val: fmt.Sprintf("background-color: %s;", color),
+            },
+        },
+        FirstChild: node,
+    }
+
+    // TODO: Highlight every child too
+
+    return styleWrapper
+}
 
 // createDiff compares two html nodes and edits the first one to show the differences
 func createDiff(a, b, parent *html.Node) {
@@ -77,13 +96,13 @@ func createDiff(a, b, parent *html.Node) {
 	}
 
 	if a == nil {
-		parent.AppendChild(makeChangeWrapper(b, "green"))
+		parent.AppendChild(makeChangeWrapperNew(b, "green"))
 		return
 	}
 
 	if b == nil {
         a.Parent.AppendChild(
-            makeChangeWrapper(a.FirstChild, "red"),
+            makeChangeWrapperNew(a.FirstChild, "red"),
         )
 
         a.Parent.RemoveChild(a)
